@@ -1,3 +1,5 @@
+# Part 1
+
 directions = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
 
 def has_adjacent_symbol(i, j, value_lines):
@@ -188,6 +190,61 @@ for i in range(height) :
     
     if has_symbol : 
         sum += number
+
+    
+print("width : " + str(sum))
+
+
+# Part 2
+
+directions = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
+
+def has_star(i, j, value_lines):
+    for d in directions :
+        new_i = i+d[0]
+        new_j = j+d[1]
+        if (new_i >= 0 and new_i < height and 
+            new_j >= 0 and new_j < width and 
+            value_lines[new_i][new_j] == '*') :
+                return f"{new_i},{new_j}"
+    
+    return None
+
+
+value_lines = values.split('\n')
+height = len(value_lines)
+width = len(value_lines[0])
+
+print("height : " + str(height))
+print("width : " + str(width))
+sum = 0
+stars = {}
+
+for i in range(height) :
+    number = 0
+    star_coords = None
+    for j in range(width) :
+        if value_lines[i][j].isdigit() :
+            if star_coords == None :
+                star_coords = has_star(i,j,value_lines)
+            number = number*10 + int(value_lines[i][j])
+        else : 
+            print("number : " + str(number))
+            print("star_coords : " + str(star_coords))
+            if star_coords is not None : 
+
+                if star_coords in stars :
+                    sum += number * stars[star_coords]
+                else :
+                    stars[star_coords] = number
+            number = 0
+            star_coords = None
+    
+    if star_coords is not None : 
+        if star_coords in stars :
+            sum += number * stars[star_coords]
+        else :
+            stars[star_coords] = number
 
     
 print("width : " + str(sum))
